@@ -1,0 +1,19 @@
+#win10下安装redis#
+  下载redis windows版本
+   在不是c盘的其他盘里新建redis文件夹，将压缩包解压到其中
+
+                  cmd--->D:--->cd redis 切换到redis目录
+              
+       使用命令
+               redis-server.exe  redis.windows.conf  
+       创建临时redis服务器
+       
+       如果需要永久服务，使用命令
+     redis-server.exe --service-install redis.windows.conf --loglevel verbose
+       添加一个windows服务     
+
+这时候可以去windows服务管理界面查看redis服务存在，但是还没有启动，可以手动启动，也可以使用命令
+
+     redis-server --service-start     //来启动redis服务
+     
+     
