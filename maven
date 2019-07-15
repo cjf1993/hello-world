@@ -1,0 +1,100 @@
+maven在idea中配置：
+ctrl+alt+s（file下的settings）搜索maven 设置配置如下：
+|--------------------------------------------------|
+   Maven  home  Directory(安装目录)---》选择maven的安装目录
+   User  settings file(配置文件)---》选择maven安装目录下的conf文件夹下的settings.xml文件
+   Local repository(本地仓库)---》选择maven本机仓库（settings.xml）
+   
+   
+   
+   |--------settings.xml文件设置实例：--------|
+   <?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+	<localRepository>D:\myRepository</localRepository>   //本地仓库设置
+
+    <servers>
+		<server>
+            <id>releases</id>
+            <username>admin</username>
+            <password>admin123</password>  //私库1的id，账号，密码
+        </server>
+		
+		<server>
+			<id>snapshots</id>
+			<username>admin</username>
+			<password>admin123</password>  ////私库2的id，账号，密码
+		</server>
+    </servers>
+ 
+    <mirrors>
+            <mirror>
+                <id>nexus</id>
+                <mirrorOf>*</mirrorOf> 
+                <name>central-mirror</name> 
+                <url>http://192.168.96.17:8081/nexus/content/groups/public/</url>  //私库1
+            </mirror> 
+			<mirror>
+                <id>nexus</id>
+                <mirrorOf>*</mirrorOf> 
+                <name>central-mirror</name> 
+                <url>http://192.168.88.88:8081/nexus/content/groups/public/</url>  //私库2
+            </mirror> 
+			<mirror>    
+            <id>central</id>    
+            <name>internal</name>
+    　　　　 <url>http://maven.aliyun.com/nexus/content/groups/public/</url>    //阿里镜像仓库
+            <mirrorOf>central</mirrorOf> 
+        </mirror> 
+		
+    </mirrors>
+ 
+    <profiles>
+         <profile>
+            <id>nexus</id>
+            <repositories>
+                <repository>
+                    <id>nexus</id>
+                    <url> http://central</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>nexus</id>
+                    <url> http://central</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>    
+	
+    <activeProfiles>
+        <activeProfile>nexus</activeProfile>
+        <!--<activeProfile>profile-iss</activeProfile>-->
+    </activeProfiles>
+ 
+<!--
+    <proxies>
+        <proxy>
+            <active>true</active>
+            <protocol>http</protocol>
+            <host>10.10.204.160</host>
+            <port>80</port>
+        </proxy>
+    </proxies>
+-->
+</settings>
+
