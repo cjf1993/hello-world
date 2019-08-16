@@ -1,0 +1,22 @@
+1.下载压缩版
+2.解压安装包，根据自己的喜好选择路径，我选择的路径是C:\software\，因此MySQL的完整路径为：C:\software\mysql-5.7.21-winx64
+3.配置环境变量
+
+4. （1）新增系统环境变量：--》键名：MYSQL_HOME   值为：C:\software\mysql-5.7.21-winx64
+   （2）--》在Path中添加：%MYSQL_HOME%\bin，注意Path中不同值之间的“；”符号不能省略
+5. 准备好my.ini文件，可以先新建一个my.txt文件，然后通过重命名修改文件后缀为.ini，
+   以前的版本解压后或许会存在my-default.ini文件，但是5.7.21版本没有，因此要自己手动创建该文件，文件的内容如下：
+   [mysqld] 
+port = 3306 
+basedir=C:/software/mysql-5.7.21-winx64 
+datadir=C:/software/mysql-5.7.21-winx64/data 
+max_connections=200 
+character-set-server=utf8 
+default-storage-engine=INNODB 
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES 
+[mysql] 
+default-character-set=utf8
+6.去mysql的bin目录，cmd进入，执行mysqld --initialize --console
+再执行 mysqld –install mysql导入MySQL服务，出现图中的提示，表示导入成功。
+   
+   
