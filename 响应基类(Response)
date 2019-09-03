@@ -173,3 +173,10 @@ public class TableResultResponse<T> extends BaseResponse {
         }
     }
 }
+--------------------------
+5.异常返回
+public class TokenErrorResponse extends BaseResponse {
+    public TokenErrorResponse(String message) {
+        super(RestCodeConstants.TOKEN_ERROR_CODE, message);
+    }
+}
