@@ -1,0 +1,175 @@
+1.基本Rest返回：
+public class BaseResponse {
+    private int status = 200;
+    private String message;
+
+    public BaseResponse(int status, String message) {
+        this.status = status;
+        this.message = message;
+    }
+
+    public BaseResponse() {
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+}
+--------------------------------------------------------
+2.分页返回：
+public class ListRestResponse<T> {
+    String msg;
+    T result;
+    int count;
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public T getResult() {
+        return result;
+    }
+
+    public void setResult(T result) {
+        this.result = result;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public ListRestResponse count(int count) {
+        this.setCount(count);
+        return this;
+    }
+
+    public ListRestResponse count(Long count) {
+        this.setCount(count.intValue());
+        return this;
+    }
+
+    public ListRestResponse msg(String msg) {
+        this.setMsg(msg);
+        return this;
+    }
+
+    public ListRestResponse result(T result) {
+        this.setResult(result);
+        return this;
+    }
+}
+-------------------------------------
+3.泛型数据返回
+public class ObjectRestResponse<T> extends BaseResponse {
+
+    T data;
+    boolean rel;
+
+    public boolean isRel() {
+        return rel;
+    }
+
+    public void setRel(boolean rel) {
+        this.rel = rel;
+    }
+
+
+    public ObjectRestResponse rel(boolean rel) {
+        this.setRel(rel);
+        return this;
+    }
+
+
+    public ObjectRestResponse data(T data) {
+        this.setData(data);
+        return this;
+    }
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+}
+---------------------------------------------------
+4.表格数据返回
+public class TableResultResponse<T> extends BaseResponse {
+
+    TableData<T> data;
+
+    public TableResultResponse(long total, List<T> rows) {
+        this.data = new TableData<T>(total, rows);
+    }
+
+    public TableResultResponse() {
+        this.data = new TableData<T>();
+    }
+
+    TableResultResponse<T> total(int total) {
+        this.data.setTotal(total);
+        return this;
+    }
+
+    TableResultResponse<T> total(List<T> rows) {
+        this.data.setRows(rows);
+        return this;
+    }
+
+    public TableData<T> getData() {
+        return data;
+    }
+
+    public void setData(TableData<T> data) {
+        this.data = data;
+    }
+
+    class TableData<T> {
+        long total;
+        List<T> rows;
+
+        public TableData(long total, List<T> rows) {
+            this.total = total;
+            this.rows = rows;
+        }
+
+        public TableData() {
+        }
+
+        public long getTotal() {
+            return total;
+        }
+
+        public void setTotal(long total) {
+            this.total = total;
+        }
+
+        public List<T> getRows() {
+            return rows;
+        }
+
+        public void setRows(List<T> rows) {
+            this.rows = rows;
+        }
+    }
+}
