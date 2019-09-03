@@ -1,6 +1,7 @@
 由于spring4增加了对泛型注入的支持，这个特性对于Mybatis的通用Mapper来说，非常的有用，可以直接在service中写Mapper<T>，通过BaseService<T> 来实现通用的Service； 
 Spring 抽象出Service方法– BaseService
 eg：
+1.抽象类
 public abstract class BaseService<T> {
     // public abstract Mapper<T> getMapper();
  
@@ -147,4 +148,203 @@ public abstract class BaseService<T> {
 public class ItemCartService extends BaseService<ItemCart>{
     //这里可以没有任何业务代码，当然也可以根据业务需求，写出相应的代码
 }
+--------------------------------------------------------
+2.接口
+public interface BaseService<T> {
+    /**
+     * 查询
+     *
+     * @param entity
+     * @return
+     */
+    T selectOne(T entity);
 
+    /**
+     * 通过Id查询
+     *
+     * @param id
+     * @return
+     */
+    T selectById(Object id);
+
+    /**
+     * 根据ID集合来查询
+     *
+     * @param ids
+     * @return
+     */
+//    List<T> selectListByIds(List<Object> ids);
+
+    /**
+     * 查询列表
+     *
+     * @param entity
+     * @return
+     */
+    List<T> selectList(T entity);
+
+
+    /**
+     * 获取所有对象
+     *
+     * @return
+     */
+    List<T> selectListAll();
+
+
+    /**
+     * 查询总记录数
+     *
+     * @return
+     */
+//    Long selectCountAll();
+
+    /**
+     * 查询总记录数
+     *
+     * @param entity
+     * @return
+     */
+    Long selectCount(T entity);
+
+    /**
+     * 添加
+     *
+     * @param entity
+     */
+    void insert(T entity);
+
+
+    /**
+     * 插入 不插入null字段
+     *
+     * @param entity
+     */
+    void insertSelective(T entity);
+
+    /**
+     * 删除
+     *
+     * @param entity
+     */
+    void delete(T entity);
+
+    /**
+     * 根据Id删除
+     *
+     * @param id
+     */
+    void deleteById(Object id);
+
+
+    /**
+     * 根据id更新
+     *
+     * @param entity
+     */
+    void updateById(T entity);
+
+
+    /**
+     * 不update null
+     *
+     * @param entity
+     */
+    void updateSelectiveById(T entity);
+
+    /**
+     * 根据ID集合批量删除
+     *
+     * @param ids
+     */
+//    void deleteBatchByIds(List<Object> ids);
+
+
+    /**
+     * 批量更新
+     *
+     * @param entitys
+     */
+//    void updateBatch(List<T> entitys);
+}
+接口实现：
+public class BaseServiceImpl<M extends Mapper<T>, T> implements BaseService<T> {
+    @Autowired
+    protected M mapper;
+
+
+    @Override
+    public T selectOne(T entity) {
+        return mapper.selectOne(entity);
+    }
+
+    @Override
+    public T selectById(Object id) {
+        return mapper.selectByPrimaryKey(id);
+    }
+
+//    @Override
+//    public List<T> selectListByIds(List<Object> ids) {
+//        return mapper.selectByIds(ids);
+//    }
+
+    @Override
+    public List<T> selectList(T entity) {
+        return mapper.select(entity);
+    }
+
+    @Override
+    public List<T> selectListAll() {
+        return mapper.selectAll();
+    }
+
+//    @Override
+//    public Long selectCountAll() {
+//        return mapper.selectCount();
+//    }
+
+    @Override
+    public Long selectCount(T entity) {
+        return Long.valueOf(mapper.selectCount(entity));
+    }
+
+    @Override
+    public void insert(T entity) {
+        mapper.insert(entity);
+    }
+
+    @Override
+    public void insertSelective(T entity) {
+        mapper.insertSelective(entity);
+    }
+
+    @Override
+    public void delete(T entity) {
+        mapper.delete(entity);
+    }
+
+    @Override
+    public void deleteById(Object id) {
+        mapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public void updateById(T entity) {
+        mapper.updateByPrimaryKey(entity);
+    }
+
+    @Override
+    public void updateSelectiveById(T entity) {
+        mapper.updateByPrimaryKeySelective(entity);
+    }
+
+//    @Override
+//    public void deleteBatchByIds(List<Object> ids) {
+//        mapper.batchDeleteByIds(ids);
+//    }
+//
+//    @Override
+//    public void updateBatch(List<T> entitys) {
+//        mapper.batchUpdate(entitys);
+//    }
+}
