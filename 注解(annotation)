@@ -1,0 +1,13 @@
+1.元注解构建
+@Retention(RetentionPolicy.RUNTIME)
+@Target(value={ElementType.METHOD,ElementType.TYPE})
+public @interface IgnoreClientToken {
+}
+2.复合注解
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Import(AutoConfiguration.class)
+@Documented
+@Inherited
+public @interface EnableAceAuthClient {
+}
