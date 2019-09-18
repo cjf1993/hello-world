@@ -1,0 +1,47 @@
+就是 #｛｝是会给参数带引号还会给你隐藏参数， ${} 不会给参数带引号还暴露了参数，带引号就能直接到Sql里拼接出一个查询。
+
+
+在项目中查询时间段的sql语句(时间类型为datetime或date)：
+<if test="pojo.begintime!=null and pojo.begintime!=''">
+<![CDATA[   and DATE_FORMAT(tr.summary_date, '%Y-%m-%d')>=  DATE_FORMAT(#{pojo.begintime}, '%Y-%m-%d')   ]]>
+</if>
+<if test="pojo.endtime!=null and pojo.endtime!=''">
+<![CDATA[  and DATE_FORMAT(tr.summary_date, '%Y-%m-%d') <= DATE_FORMAT(#{pojo.endtime}, '%Y-%m-%d')    ]]>
+</if>
+
+
+ 在项目中查询时间段的sql语句(时间类型为varchar)：
+<if test="excelImport_date_begin != null and excelImport_date_begin != '' ">
+            AND
+            tm.excelImport_date&gt;=#{excelImport_date_begin}
+</if>
+<if test="excelImport_date_end != null and excelImport_date_end != '' ">
+            AND
+            tm.excelImport_date    &lt;=#{excelImport_date_end}
+</if>
+sql分页查询：
+
+SQL的语句LIMIT 约束SELECT 查询数据包表时，使得SQL查询语句返回指定的记录数（行数）。LIMIT 可以设置1个或2个int整型常量数字作为参数。LIMIT在数据分页查询时候十分有用，因为不是每一次查询都需要：
+SELECT * FROM table
+这么笨重的花费巨大性能开销查出所有数据，而是有约束的查询需要的分页数据即可。
+LIMIT设置两个参数时候，前一个参数表示偏移，后一个表示最多查出的数据条数。
+比如常见的：
+SELECT * FROM table
+使用LIMIT约束后，变成：
+SELECT * FROM table LIMIT 0，-1
+LIMIT后的第一个参数0限定偏移量，后面的-1表示数据库表中最后一条数据，因为SQL中id是从1开始，所以返回了全部数据行。
+
+（一）LIMIT n即为LIMIT 0,n
+举例：SELECT * FROM table LIMIT 10
+查出10条数据行，由于没有设置偏移量，那么就使用默认偏移量0，这10条数据id为：1,2,3,4,5,6,7,8,9,10
+可以认为LIMIT n即为LIMIT 0,n
+
+（二）LIMIT pos,count。pos为前置开始的id偏移位置（不是开始位置），count为数据条目总数。
+举例：SELECT * FROM table LIMIT 3,10
+第一个参数偏移量为3，从id=4开始，查出10条数据，这10条数据id为：4,5,6,7,8,9,10,11,12,13
+
+又如：
+SELECT * FROM table LIMIT 8,3
+第一个参数偏移量为8，从id=9开始，查出3条数据，这3条数据id为：9,10,11
+
+limit 0,10=limit 0,5+limit 5,5
