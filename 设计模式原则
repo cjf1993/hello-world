@@ -1,0 +1,28 @@
+1.单一职责原则（signle responsibility principle）：有且只有一个原因引起类的变更。
+ 
+如果IUserInfo=IUerBo+IUserMethon
+    IUserInfo userinfo=new IUserInfo();
+    IUserBo uerBo=(IUserBo)userInfo;
+    IUserMethon userMethon=(IUserMethon)userMethon;
+则一个接口=实体类接口+方法类接口；（ 不符合单一职责原则）
+
+将一个接口拆分成俩个接口的的行为就是单一职责原则--->
+
+2.里氏替换原则
+（1）子类必须完全实现父类的方法
+（2）子类可以有自己的个性
+ (3)覆盖或实现父类的方法时输入参数可以被放大
+（4）覆写或实现父类的方法时输出结果可以被缩小
+
+ 3.依赖倒置原则
+ （1）构造函数传递依赖对象
+ （2）Setter方法传递依赖对象
+ （3）接口声明依赖对象
+ 
+ 4.接口隔离原则
+ 
+ 
+ 
+ 
+ 
+
