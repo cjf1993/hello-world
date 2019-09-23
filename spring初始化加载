@@ -1,0 +1,26 @@
+/**
+ * 初始化加载工具类 
+ * @author 谭友生
+ * @version Bessky V100R001 2019年5月22日
+ * @since Bessky V100R001C00
+ */
+@Component
+public class InitializtionLoading
+{
+    @Autowired
+    private WarehouseMapper warehouseMapper;
+
+    /**
+     * 
+     * spring初始化加载获取仓库列表 
+     * @author 谭友生
+     */
+    @PostConstruct
+    public void init()
+    {
+        // 获取所有仓库
+        List<Warehouse> selectWarehouseByAll = warehouseMapper.selectWarehouseByAll();
+        // 将静态代码块的仓库列表重新设置
+        OrderUtils.setWarehouses(selectWarehouseByAll);
+    }
+}
