@@ -1,0 +1,34 @@
+      //多sheet导出，分批查询
+      
+      try {
+            out = response.getOutputStream();
+            writer = EasyExcelFactory.getWriter(out);
+            long count = 0;
+            if (countSize % MAX_EXPORT_COUNT == 0) {
+                count = countSize / MAX_EXPORT_COUNT;
+            } else {
+                count = countSize / MAX_EXPORT_COUNT + 1;
+            }
+            for (int i = 0; i <= count; i++) {
+                pd.put("posIndex", i*MAX_EXPORT_COUNT );  //查询偏移量
+                pd.put("limitSize", MAX_EXPORT_COUNT); //每次查询数量10000
+                List<PushK3ExportDto> list = skuStatisMapper.queryExportPage(pd);  //多sheet的easyExcel导出，resultType和bean一一对应
+                com.alibaba.excel.metadata.Sheet sheets =
+                        new com.alibaba.excel.metadata.Sheet(i, 0, PushK3ExportDto.class);
+                sheets.setSheetName("sheet" + i);
+                writer.write(list, sheets);
+            }
+
+        } catch (Exception e) {
+
+        }
+        finally {
+            try {
+                out.flush();
+                writer.finish();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
